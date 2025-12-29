@@ -1,0 +1,28 @@
+<header class="header">
+  <div class="container header-content">
+    <h1 class="logo" (click)="goHome()">
+      💰 Smart Expense Tracker
+    </h1>
+
+    <nav class="nav-links">
+      <button
+        *ngIf="isLoggedIn"
+        (click)="goToDashboard()"
+        routerLinkActive="active">
+        Dashboard
+      </button>
+      <button
+        *ngIf="isLoggedIn"
+        (click)="goToExpenses()"
+        routerLinkActive="active">
+        Expenses
+      </button>  
+
+      <button
+        class="logout"
+        (click)="logout()">
+        Logout
+      </button>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,9 @@
+<div class="container dash">
+  <h2>Dashboard</h2>
+  <div class="summary">
+    <h3>My Wallet : {{wallet}}</h3>
+    <h3>Total Expenses: {{ total }}</h3>
+    <p>You have {{ expenses.length }} expenses</p>
+  </div>
+  <a (click)="goToExpense()" class="btn">Go to Expenses →</a>
+</div>
