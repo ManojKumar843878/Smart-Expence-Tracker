@@ -3,13 +3,13 @@ import { LoginComponent } from './pages/login/login';
 import { SignupComponent } from './pages/signup/signup';
 import { ExpensesComponrnt } from './pages/expenses/expenses';
 import { DashboardComponent } from './pages/dashboard/dashboard';
-
+import { AuthGuard } from './guards/auth.guard';
 export const routes: Routes = [
     { path : "" , redirectTo:"Login" ,pathMatch:"full"},
     { path:"Login", component: LoginComponent },
-    { path :"Signup " ,component: SignupComponent},
-    { path:"Expence",component:ExpensesComponrnt},
-    { path : "Dashboard", component:DashboardComponent},
-    { path: '**', redirectTo: '/Dashboard' }
+    { path :"Signup" ,component: SignupComponent},
+    { path:"Expence",component:ExpensesComponrnt ,  canActivate: [AuthGuard]},
+    { path : "Dashboard", component:DashboardComponent , canActivate: [AuthGuard]},
+    { path: '**', redirectTo: 'Login' }
 
 ];

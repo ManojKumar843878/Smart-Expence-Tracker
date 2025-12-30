@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ExpenceService } from '../../services/expense.service';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -16,7 +18,7 @@ export class DashboardComponent {
   total =0;
   wallet=1000;
   
-  constructor(private _expenseService : ExpenceService , private route :Router){}
+  constructor(private _expenseService : ExpenceService , private router :Router , private auth: AuthService){}
 
   ngOnInit(){
     this.expenses=this._expenseService.getExpenses()
@@ -24,6 +26,11 @@ export class DashboardComponent {
     this.wallet=this.wallet- this.total;
   }
    goToExpense(){
-    this.route.navigate(['/Expence'])
+    this.router.navigate(['/Expence'])
    }
+
+    logout() {
+    this.auth.logOut();
+    this.router.navigate(['/Login']);
+  }
 }

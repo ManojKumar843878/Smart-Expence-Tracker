@@ -15,12 +15,9 @@ export class App implements OnInit {
 
   constructor(public routee: Router, private authService: AuthService) { }
   ngOnInit(): void {
-    // Every time the app loads or refreshes
-    if (this.authService.isLoggedIn()) {
-      this.routee.navigate(['/Dashboard']);  // Go to Dashboard
-    }
+   this.routee.navigate(['/Login'])
   }
-  protected readonly title = signal('myApp');
+  protected readonly title = signal('SmartExpenceTracker');
 
 
 }
