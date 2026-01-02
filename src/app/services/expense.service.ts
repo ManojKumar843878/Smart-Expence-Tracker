@@ -39,6 +39,7 @@ export interface Expense{
      saveStorage() {
         localStorage.setItem(this.key, JSON.stringify(this.Expenses))
      }
+     
      loadFormStorage() {
        const data = localStorage.getItem(this.key);
        if(data){

@@ -1,34 +1,22 @@
 <div class="container">
   <h2>My Expenses</h2>
 
-  <!-- Add / Edit Form -->
+
   <div class="card form-card">
     <h3>{{ editingId ? 'Edit Expense' : 'Add New Expense' }}</h3>
 
     <form (ngSubmit)="addOrUpdate()">
       <div class="grid">
-        <input
-          type="number"
-          placeholder="Amount (e.g. 500)"
-          [(ngModel)]="form.amount"
-          name="amount"
-          required
-          min="1"
-        />
+        <input type="number" placeholder="Amount (e.g. 500)" [(ngModel)]="form.amount" name="amount" required min="1" />
 
-        <select [(ngModel)]="form.catogory" name="catogory"  required>
+        <select [(ngModel)]="form.catogory" name="catogory" required>
           <option value="" disabled selected>Select Category</option>
           <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
         </select>
 
-        <input type="date" [(ngModel)]="form.date" name="date"  required />
+        <input type="date" [(ngModel)]="form.date" name="date" required />
 
-        <input
-          type="text"
-          placeholder="Description (optional)"
-          [(ngModel)]="form.description"
-          name="description"
-        />
+        <input type="text" placeholder="Description (optional)" [(ngModel)]="form.description" name="description" />
       </div>
 
       <div class="button-group">
@@ -36,23 +24,54 @@
           {{ editingId ? 'Update' : 'Add' }} Expense
         </button>
 
-        <button
-          type="button"
-          *ngIf="editingId"
-          (click)="cancelEdit()"
-          class="btn-secondary"
-        >
+        <button type="button" *ngIf="editingId" (click)="cancelEdit()" class="btn-secondary">
           Cancel
         </button>
       </div>
     </form>
   </div>
 
-  <!-- Expenses List -->
-  <div class="card list-card">
-    <h3>All Expenses ({{ expenses.length }})</h3>
 
-    <table *ngIf="expenses.length > 0; else noExpenses">
+  <div class="card list-card">
+    <div>
+      <h3>All Expenses ({{ expenses.length }})</h3>
+    </div>
+    <div>
+      <h3>Apply Filters</h3>
+    </div>
+    <div class="grid">
+      <select [(ngModel)]="selectedCategory" (change)="applyFilters()" placeholder="select catogry">
+        <option value="">Select Category</option>
+        <option *ngFor="let exp of categories" [value]="exp">{{exp}}</option>
+      </select>
+
+      <select [(ngModel)]="selectedMonth" (change)="applyFilters()">
+        <option value="">Select Months</option>
+        <option *ngFor="let mon of Months" [value]="mon">{{mon}}</option>
+      </select>
+
+      <select [(ngModel)]="selectedYear" (change)="applyFilters()">
+        <option value=""> Select Year</option>
+        <option *ngFor="let yr of years" [value]="yr"> {{yr}}</option>
+      </select>
+
+      <!-- <select [(ngModel)]="selectedDate" (change)="applyFilters()">
+      <option value="" disabled selected> Select Month</option>
+      <option >12</option>
+    </select>-->
+
+      <input type="date" [(ngModel)]="selectedDate" (change)="applyFilters()" placeholder="Select Date" />
+
+      <select [(ngModel)]="amountOrder" (change)="applyFilters()">
+        <option value="" disabled selected>
+          Select Amount Order
+        </option>
+        <option value="high"> Amount High -> Low</option>
+        <option value="low"> Amount Low -> High</option>
+      </select>
+
+    </div>
+    <table *ngIf="FilterExpence.length > 0; else noExpenses">
       <thead>
         <tr>
           <th>Amount</th>
@@ -63,7 +82,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let exp of expenses">
+        <tr *ngFor="let exp of FilterExpence">
           <td>{{ exp.amount }}</td>
           <td>{{ exp.catogory }}</td>
           <td>{{ exp.date }}</td>
@@ -80,4 +99,124 @@
       <p class="empty">No expenses added yet</p>
     </ng-template>
   </div>
+
+  <div class="card form-card">
+    <h3>Total expenses : {{ExpenceTotal}}</h3>
+    <h3>Avg Expenses : {{ExpenceAvgTotal}}</h3>
+  </div>
+
 </div>
+<!-- 
+<div class="container">
+  <h2>My Expenses</h2>
+
+  
+  <div class="card form-card">
+    <h3>{{ editingId ? 'Edit Expense' : 'Add New Expense' }}</h3>
+
+    <form (ngSubmit)="addOrUpdate()">
+      <div class="grid">
+        <input type="number" placeholder="Amount (e.g. 500)" [(ngModel)]="form.amount" name="amount" required min="1" />
+
+        <select [(ngModel)]="form.catogory" name="catogory" required>
+          <option value="" disabled>Select Category</option>
+          <option *ngFor="let cat of categories" [value]="cat">
+            {{ cat }}
+          </option>
+        </select>
+
+        <input type="date" [(ngModel)]="form.date" name="date" required />
+
+        <input type="text" placeholder="Description (optional)" [(ngModel)]="form.description" name="description" />
+      </div>
+
+      <div class="button-group">
+        <button type="submit" class="btn-primary">
+          {{ editingId ? 'Update' : 'Add' }} Expense
+        </button>
+
+        <button type="button" *ngIf="editingId" (click)="cancelEdit()" class="btn-secondary">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+
+  
+  <div class="card list-card">
+    <div class="grid">
+      <h3>All Expenses ({{ filteredExpenses.length }})</h3>
+
+      <select [(ngModel)]="selectedCategory" (change)="applyFilters()">
+        <option value="">All Categories</option>
+        <option *ngFor="let cat of categories" [value]="cat">
+          {{ cat }}
+        </option>
+      </select>
+
+      <select [(ngModel)]="selectedMonth" (change)="applyFilters()">
+        <option value="">All Months</option>
+        <option value="0">Jan</option>
+        <option value="1">Feb</option>
+        <option value="2">Mar</option>
+        <option value="3">Apr</option>
+        <option value="4">May</option>
+        <option value="5">Jun</option>
+        <option value="6">Jul</option>
+        <option value="7">Aug</option>
+        <option value="8">Sep</option>
+        <option value="9">Oct</option>
+        <option value="10">Nov</option>
+        <option value="11">Dec</option>
+      </select>
+
+      <select [(ngModel)]="selectedYear" (change)="applyFilters()">
+        <option value="">All Years</option>
+        <option value="2024">2024</option>
+        <option value="2025">2025</option>
+      </select>
+
+      <select [(ngModel)]="amountOrder" (change)="applyFilters()">
+        <option value="">No Sort</option>
+        <option value="high">Amount High → Low</option>
+        <option value="low">Amount Low → High</option>
+      </select>
+    </div>
+
+   
+    <table *ngIf="filteredExpenses.length > 0; else noExpenses">
+      <thead>
+        <tr>
+          <th>Amount</th>
+          <th>Category</th>
+          <th>Date</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let exp of filteredExpenses">
+          <td>{{ exp.amount }}</td>
+          <td>{{ exp.catogory }}</td>
+          <td>{{ exp.date }}</td>
+          <td>{{ exp.description || '-' }}</td>
+          <td>
+            <button (click)="edit(exp)" class="btn-edit">Edit</button>
+            <button (click)="delete(exp)" class="btn-delete">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #noExpenses>
+      <p class="empty">No expenses added yet</p>
+    </ng-template>
+  </div>
+
+ 
+  <div class="card form-card">
+    <h3>Total Expenses: {{ ExpenceTotal }}</h3>
+    <h3>Avg Expense: {{ ExpenceAvgTotal | number:'1.0-2' }}</h3>
+  </div>
+</div>-->

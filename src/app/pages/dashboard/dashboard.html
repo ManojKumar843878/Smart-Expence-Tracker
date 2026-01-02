@@ -1,9 +1,71 @@
+
 <div class="container dash">
-  <h2>Dashboard</h2>
-  <div class="summary">
-    <h3>My Wallet : {{wallet}}</h3>
-    <h3>Total Expenses: {{ total }}</h3>
-    <p>You have {{ expenses.length }} expenses</p>
+
+  <h2 class="title">Dashboard</h2>
+  <p class="subtitle">Expense Overview Summary</p>
+
+  <!-- SUMMARY CARDS -->
+  <div class="summary-grid">
+    <div class="card">
+      <p>Total Expense</p>
+      <h3>₹{{ total }}</h3>
+    </div>
+
+    <div class="card">
+      <p>Avg / Month</p>
+      <h3>₹{{ avgPerMonth | number:'1.0-0' }}</h3>
+    </div>
+
+    <div class="card">
+      <p>Top Category</p>
+      <h3>{{ topCategory }}</h3>
+    </div>
+
+    <div class="card">
+      <p>This Month</p>
+      <h3>₹{{ thisMonthTotal }}</h3>
+    </div>
   </div>
-  <a (click)="goToExpense()" class="btn">Go to Expenses →</a>
+
+  <!-- CHARTS -->
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h4>Monthly Expense Trend</h4>
+      <canvas id="monthlyChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <h4>Category Wise Distribution</h4>
+      <canvas id="categoryChart"></canvas>
+    </div>
+  </div>
+
+  <!-- RECENT EXPENSES -->
+  <div class="recent-card">
+    <h4>Recent Expenses (Last 5)</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Amount</th>
+          <th>Category</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let exp of recentExpenses">
+          <td>₹{{ exp.amount }}</td>
+          <td>{{ exp.catogory }}</td>
+          <td>{{ exp.date }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="actions">
+    <button class="btn" (click)="goToExpense()">Go to Expenses</button>
+    <button class="btn logout" (click)="logout()">Logout</button>
+  </div>
+
 </div>
+
